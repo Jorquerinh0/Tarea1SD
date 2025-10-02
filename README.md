@@ -102,6 +102,6 @@ docker compose down
 
 ---
 
-## ✨ Notas
+##  Notas
 - El sistema está pensado para entornos con recursos limitados, por lo que es recomendable ejecutar tráfico en lotes pequeños.  
 - Puedes modificar los parámetros de tráfico en `traffic_generator` para ajustar la intensidad de consultas.  
