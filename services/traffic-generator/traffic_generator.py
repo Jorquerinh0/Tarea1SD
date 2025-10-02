@@ -99,7 +99,7 @@ def run_traffic(mode: str, interval_rate: float, num_requests: int, questions_df
                 response.raise_for_status()
                 result = response.json()
 
-                # SCORE SIMULADO
+                # PARA PRUEBA, CAMBIAR A EL ORIGINAL PREVIO ENVIOOOO
                 result['score'] = round(random.uniform(0, 1), 4)
                 score = result['score']
                 source = result.get('source', 'llm')
