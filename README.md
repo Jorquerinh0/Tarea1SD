@@ -5,7 +5,7 @@ La arquitectura está basada en **Docker Compose** y servicios modulares.
 
 ---
 
-## 📂 Estructura del proyecto
+##  Estructura del proyecto
 
 ```
 yahoo-llm-eval/
@@ -33,7 +33,7 @@ yahoo-llm-eval/
 
 ---
 
-## ⚙️ Requisitos previos
+##  Requisitos previos
 
 - **Python 3.10+** y `venv` habilitado
 - **Docker** y **Docker Compose**
@@ -41,7 +41,7 @@ yahoo-llm-eval/
 
 ---
 
-## 🚀 Instalación y ejecución
+##  Instalación y ejecución
 
 ### 1. Clonar repositorio y entrar en la carpeta raíz
 ```bash
@@ -86,7 +86,7 @@ docker compose run --rm traffic
 
 ---
 
-## 🔑 Variables de entorno
+##  Variables de entorno
 
 El archivo `.env` debe contener:
 ```env
@@ -95,7 +95,7 @@ GEMINI_API_KEY=key correspondiente a usuario
 
 ---
 
-## 🛑 Detener servicios
+##  Detener servicios
 ```bash
 docker compose down
 ```
