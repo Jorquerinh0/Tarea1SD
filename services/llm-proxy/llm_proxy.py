@@ -120,14 +120,18 @@ def call_llm_and_score_async(data: QuestionRequest, respuesta_llm: str):
     except Exception as e:
         print(f"ERROR inesperado durante el scoring/cacheo (ID {req_id}): {e}")
 
-# --- SIMULACIÓN DE LLM ---
+
+# --- RECORDAR CAMBIAR POR LA LOGICA REAAAAL, ESTA ES SOLO SIMULACION PARA PROBARRRR---
+
+
+# --- SIMULACIÓN DE LLM PROVISORIA---
 def simulate_llm_response(pregunta: str) -> str:
     """Simula latencia y respuesta de un LLM real."""
     time.sleep(1.0) # 1.0s de demora
     random.seed(hash(pregunta) % 10000) 
     return f"Respuesta LLM (ID {random.randint(1000, 9999)}): 'La respuesta a su pregunta sobre {pregunta[:20]}... es un hecho conocido.'"
 
-# --- LÓGICA DE VARIACIÓN DE SCORE ---
+# --- LÓGICA DE VARIACIÓN DE SCORE PROVISORIA---
 def apply_score_fluctuation(base_score: float) -> float:
     """Aplica una variación aleatoria simulada al score base."""
     # Simula la misma variación de +/- 0.05 que el Scorer
