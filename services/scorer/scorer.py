@@ -18,7 +18,6 @@ app = FastAPI()
 
 # --- CONEXIÓN A POSTGRES ---
 def get_db_connection():
-    # El DATABASE_URL debe ser 'postgres://postgres:postgres@postgres:5432/yahoo_eval'
     try:
         return psycopg2.connect(os.environ['DATABASE_URL'])
     except Exception as e:
