@@ -27,8 +27,6 @@ def get_db_connection():
 def create_table(conn):
     print("Creando tabla 'respuestas_analisis'...")
     with conn.cursor() as cur:
-        # **IMPORTANTE:** Eliminar la tabla existente para asegurar que el esquema sea consistente
-        # con la última versión y evitar conflictos de nombres de columna.
         cur.execute("DROP TABLE IF EXISTS respuestas_analisis CASCADE;") 
         
         # La respuesta LLM y el score se actualizan después
