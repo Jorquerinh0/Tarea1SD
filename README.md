@@ -77,7 +77,7 @@ docker compose run --rm traffic
 
 ---
 
-## 📊 Flujo de trabajo
+##  Flujo de trabajo
 
 1. **Carga de datos** → `load_data` importa el `train.csv` a la base del sistema.  
 2. **Proxy LLM** → `llm_proxy` maneja la conexión al modelo (Gemini).  
@@ -86,7 +86,7 @@ docker compose run --rm traffic
 
 ---
 
-##  Variables de entorno
+## Variables de entorno
 
 El archivo `.env` debe contener:
 ```env
