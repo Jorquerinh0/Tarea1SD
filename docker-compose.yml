@@ -1,0 +1,99 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: yahoo_eval
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    ports:
+      - "6380:6379"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  scorer:
+    build:
+      context: .
+      dockerfile: services/scorer/Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/yahoo_eval
+    command: ["uvicorn", "scorer:app", "--host", "0.0.0.0", "--port", "8000"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  llm:
+    build:
+      context: .
+      dockerfile: services/llm-proxy/Dockerfile
+    depends_on:
+      - redis
+    ports:
+      - "8002:8000"
+    environment:
+      GEMINI_API_KEY: "AIzaSyCyP4OYO1M_Z8-oKdUp38M4RLqxAQ1FV-s"
+    command: ["uvicorn", "llm_proxy:app", "--host", "0.0.0.0", "--port", "8000"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  traffic:
+    build:
+      context: .
+      dockerfile: services/traffic-generator/Dockerfile
+    depends_on:
+      - redis
+      - llm
+      - scorer
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      DATA_PATH: /app/data/train.csv
+      CACHE_SIZE: 50
+      BACKEND_URL: http://llm:8000/answer
+      MAX_QUESTIONS: 1000
+      REQUEST_TIMEOUT_SECONDS: 10
+    volumes:
+      - ./data:/app/data
+    restart: "no"
+
+  load_data:
+    build:
+      context: .
+      dockerfile: services/load_data/Dockerfile
+    depends_on:
+      - postgres
+    volumes:
+      - ./data:/app/data
+    environment:
+      DATA_PATH: /app/data/train.csv
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/yahoo_eval
+    command: ["python", "load_data.py"]
+    restart: "no"
+
+volumes:
+  pgdata:
